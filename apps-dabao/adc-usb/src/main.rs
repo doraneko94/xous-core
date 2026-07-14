@@ -8,17 +8,10 @@ fn main() -> ! {
 
     let adc = bao1x_hal_service::Adc::new();
 
-    unsafe {
-        adc.enable_channel(bao1x_hal::udma::AdcExtChannel::Adc0)
-    };
+    unsafe { adc.enable_channel(bao1x_hal::udma::AdcExtChannel::Adc0) };
 
     loop {
-        let raw = adc.read_raw(
-            bao1x_hal::udma::AdcSource::Ext(
-                bao1x_hal::udma::AdcExtChannel::Adc0
-            ),
-            None
-        );
+        let raw = adc.read_raw(bao1x_hal::udma::AdcSource::Ext(bao1x_hal::udma::AdcExtChannel::Adc0), None);
 
         let voltage = bao1x_hal::udma::Adc::raw_to_voltage(raw);
         let message = format!("{}\r\n", voltage);
