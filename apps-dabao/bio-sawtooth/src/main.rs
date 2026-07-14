@@ -1,10 +1,6 @@
+use bao1x_api::bio::{BioApi, ClockMode, CoreConfig, IoConfig, IoConfigMode};
 use bao1x_api::bio_code;
-use bao1x_api::bio::{
-    BioApi, ClockMode, CoreConfig, IoConfig, IoConfigMode
-};
-use bao1x_api::bio_resources::{
-    BioResources, ResourceSpec
-};
+use bao1x_api::bio_resources::{BioResources, ResourceSpec};
 use bao1x_hal::bio::Bio;
 
 const OUTPUT_MASK: u32 = 0b0001_1100_0000_1111_0000_0000_0011_1110;
@@ -63,30 +59,16 @@ fn main() -> ! {
 
     let mut bio = Bio::new();
 
-    let resource_spec = ResourceSpec::new("sawtooth_bio")
-        .any_core()
-        .pins_from_mask(OUTPUT_MASK);
+    let resource_spec = ResourceSpec::new("sawtooth_bio").any_core().pins_from_mask(OUTPUT_MASK);
 
-    let resource_grant = bio
-        .claim_resources(&resource_spec)
-        .expect("resource error");
+    let resource_grant = bio.claim_resources(&resource_spec).expect("resource error");
 
     let core = resource_grant.cores[0];
 
-    let core_config = CoreConfig {
-        clock_mode: ClockMode::FixedDivider(
-            QUANTUM_DIVIDER,
-            QUANTUM_FRACTION,
-        ),
-    };
+    let core_config = CoreConfig { clock_mode: ClockMode::FixedDivider(QUANTUM_DIVIDER, QUANTUM_FRACTION) };
 
-    let actual_quantum_rate = bio
-        .init_core(
-            core,
-            sawtooth_bio(),
-            core_config,
-        )
-        .expect("failed to initialize BIO program");
+    let actual_quantum_rate =
+        bio.init_core(core, sawtooth_bio(), core_config).expect("failed to initialize BIO program");
 
     let io_config = IoConfig {
         mode: IoConfigMode::SetOnly,
@@ -99,25 +81,16 @@ fn main() -> ! {
         snap_outputs: None,
     };
 
-    bio
-        .setup_io_config(io_config)
-        .expect("failed to configure BIO I/O");
+    bio.setup_io_config(io_config).expect("failed to configure BIO I/O");
 
     bio.set_core_run_state(&resource_grant, true);
 
     match actual_quantum_rate {
         Some(rate_hz) => {
-            log::info!(
-                "BIO sawtooth started: core={:?}, quantum={} Hz",
-                core,
-                rate_hz,
-            );
+            log::info!("BIO sawtooth started: core={:?}, quantum={} Hz", core, rate_hz,);
         }
         None => {
-            log::warn!(
-                "BIO sawtooth started, but the quantum rate was not reported: core={:?}",
-                core
-            );
+            log::warn!("BIO sawtooth started, but the quantum rate was not reported: core={:?}", core);
         }
     }
 
