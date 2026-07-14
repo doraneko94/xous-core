@@ -40,5 +40,6 @@
     ],
     "files.trimTrailingWhitespace": true,
     "editor.formatOnSave": true,
-    "cSpell.language": "en,fr"
+    "cSpell.language": "en,fr",
+    "baochip.xousCorePath": "c:\\Rust\\codes\\xous-core"
 }

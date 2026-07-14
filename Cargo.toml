@@ -127,7 +127,7 @@ members = [
   "apps-dabao/helloworld",
   "apps-dabao/dabao-console",
   "services/swaptest1",
-  "services/swaptest2",
+  "services/swaptest2", "apps-dabao/adc-usb", "apps-dabao/bio-sawtooth",
 ]
 resolver = "2"
 
