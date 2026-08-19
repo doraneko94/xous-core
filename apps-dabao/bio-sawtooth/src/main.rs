@@ -5,7 +5,7 @@ use bao1x_hal::bio::Bio;
 
 const OUTPUT_MASK: u32 = 0b0001_1100_0000_1111_0000_0000_0011_1110;
 
-const QUANTUM_DIVIDER: u16 = 40;
+const QUANTUM_DIVIDER: u16 = 400;
 const QUANTUM_FRACTION: u8 = 0;
 
 #[rustfmt::skip]
